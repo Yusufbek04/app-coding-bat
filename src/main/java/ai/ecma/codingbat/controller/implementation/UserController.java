@@ -22,7 +22,7 @@ public class UserController {
         return userService.editRole(userDTO);
     }
 
-    @DeleteMapping("/{id}")
+//    @DeleteMapping("/{id}")
     @PreAuthorize(value = "hasAnyAuthority('DELETE_USER')")
     public ApiResult<Boolean> delete(@PathVariable UUID id) {
         return userService.delete(id);

@@ -24,10 +24,10 @@ public class UserController {
     }
 
 //    @DeleteMapping("/{id}")
-    @PreAuthorize(value = "hasAnyAuthority('DELETE_USER')")
-    public ApiResult<Boolean> delete(@PathVariable UUID id) {
-        return userService.delete(id);
-    }
+    // @PreAuthorize(value = "hasAnyAuthority('DELETE_USER')")
+    // public ApiResult<Boolean> delete(@PathVariable UUID id) {
+    //     return userService.delete(id);
+    // }
 
     @GetMapping("/list")
     @PreAuthorize(value = "hasAnyAuthority('GET_USERS')")

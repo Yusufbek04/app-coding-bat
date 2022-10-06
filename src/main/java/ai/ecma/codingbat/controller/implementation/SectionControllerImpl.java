@@ -48,4 +48,9 @@ public class SectionControllerImpl implements SectionController {
     public ApiResult<List<SectionDTO>> getSectionsForUser() {
         return sectionService.getSectionsForUser();
     }
+
+    @Override
+    public ApiResult<List<SectionDTO>> getSectionsByLanguage(Integer languageId) {
+        return sectionService.getSectionByLanguageId(languageId);
+    }
 }

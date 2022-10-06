@@ -16,6 +16,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -229,18 +230,37 @@ public class SectionServiceImp implements SectionService {
     @Override
     public ApiResult<List<SectionDTO>> getSectionsForUser() {
         List<Section> all = sectionRepository.findAll();
-        List<SectionDTO> sectionDTOList = all.stream().map(this::mapSectionToSectionDTOForUsers).collect(Collectors.toList());
+
+        List<SectionDTO> sectionDTOList = all.stream().map(this::mapSectionToSectionDTOForUsers).sorted(Comparator.comparingInt(SectionDTO::getId)).collect(Collectors.toList());
+        return ApiResult.successResponse(sectionDTOList);
+    }
+    @Override
+    public ApiResult<List<SectionDTO>> getSectionByLanguageId(Integer id) {
+
+        if (!sectionRepository.existsByLanguageId(id))
+            throw RestException.restThrow("Language not found", HttpStatus.NOT_FOUND);
+
+        List<SectionDTO> sectionDTOList = sectionRepository
+                .getAllByLanguage_Id(id)
+                .stream()
+                .map(this::mapSectionToSectionDTOForUsers)
+                .collect(Collectors.toList());
+
         return ApiResult.successResponse(sectionDTOList);
     }
 
     private SectionDTO mapSectionToSectionDTOForUsers(Section section) {
+        int countProblem = problemRepository.countAllBySectionId(section.getId());
+        long tryCount = userProblemRepository.countAllByProblem_SectionId(section.getId());
+        long solutionCount = userProblemRepository.countAllBySolvedIsTrueAndProblem_SectionId(section.getId());
         return new SectionDTO(
                 section.getId(),
                 section.getTitle(),
                 section.getUrl(),
                 section.getDescription(),
                 section.getMaxRate(),
-                section.getLanguage().getId());
+                section.getLanguage().getId(),
+                countProblem,tryCount,solutionCount);
     }
 
     private SectionDTO mapSectionToSectionDTO(Section section, int problemCount,

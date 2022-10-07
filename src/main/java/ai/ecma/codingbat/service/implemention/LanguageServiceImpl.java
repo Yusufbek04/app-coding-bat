@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -83,7 +84,7 @@ public class LanguageServiceImpl implements LanguageService {
         String query = stringBuilder.toString();
         System.out.println(query);
         List<LanguageDTOProjection> languagesByStringQuery = languageRepository.getLanguagesByStringQuery(query);
-
+        languagesByStringQuery.sort(Comparator.comparingInt(LanguageDTOProjection::getId));
         return ApiResult.successResponse(languagesByStringQuery);
     }
 

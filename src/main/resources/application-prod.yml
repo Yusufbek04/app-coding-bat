@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: yusufbek200
+    password: cyberhack25
   jpa:
     hibernate:
       ddl-auto: create

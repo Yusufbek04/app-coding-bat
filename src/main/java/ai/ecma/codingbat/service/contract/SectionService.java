@@ -22,4 +22,5 @@ public interface SectionService {
     ApiResult<List<SectionDTO>> getSectionsForUser();
 
 
+    ApiResult<List<SectionDTO>> getSectionByLanguageId(Integer id);
 }

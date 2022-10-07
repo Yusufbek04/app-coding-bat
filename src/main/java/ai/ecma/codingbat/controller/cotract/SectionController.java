@@ -36,6 +36,6 @@ public interface SectionController {
     @GetMapping(path = "list-for-users")
     ApiResult<List<SectionDTO>> getSectionsForUser();
 
-    @GetMapping(path = "/by-language-id/{id}")
+    @GetMapping(path = "/by-language-id/{languageId}")
     ApiResult<List<SectionDTO>> getSectionsByLanguage(@PathVariable Integer languageId);
 }

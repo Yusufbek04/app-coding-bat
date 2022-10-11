@@ -12,6 +12,7 @@ import ai.ecma.codingbat.service.contract.LanguageService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -20,6 +21,8 @@ import java.util.List;
 public class LanguageControllerImpl implements LanguageController {
 
     private final LanguageService languageService;
+    private final Comparator<LanguageDTOProjection> languageDTOProjectionComparator = Comparator.comparingInt(LanguageDTOProjection::getId);
+    private final Comparator<LanguageDTO> languageDTOComparator = Comparator.comparingInt(LanguageDTO::getId);
 
 
     @Override
@@ -35,12 +38,16 @@ public class LanguageControllerImpl implements LanguageController {
 
     @Override
     public ApiResult<List<LanguageDTO>> getLanguagesForUser() {
-        return languageService.getLanguagesForUser();
+        ApiResult<List<LanguageDTO>> apiResult = languageService.getLanguagesForUser();
+        apiResult.getData().sort(languageDTOComparator);
+        return apiResult;
     }
 
     @Override
     public ApiResult<List<LanguageDTOProjection>> getLanguages(ViewDTO viewDTO, int page, int size) {
-        return languageService.getLanguagesBySuperMethod(viewDTO, page, size);
+        ApiResult<List<LanguageDTOProjection>> apiResult = languageService.getLanguagesBySuperMethod(viewDTO, page, size);
+        apiResult.getData().sort(languageDTOProjectionComparator);
+        return apiResult;
     }
 
     @Override
